@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { CourseCatalogPage } from './pages/course-catalog-page';
+import { courseTitles } from './data/learnspace-test-data';
 
 test.describe('Search for a course and recover to the full catalog', () => {
   test('[P0] Search for a course and recover to the full catalog', async ({ page }) => {
@@ -10,13 +11,13 @@ test.describe('Search for a course and recover to the full catalog', () => {
     await catalog.searchFor('python');
 
     await expect(catalog.courseCount).toHaveText('1 courses');
-    await expect(catalog.courseCard('Python for Data Analysis')).toBeVisible();
+    await expect(catalog.courseCard(courseTitles.pythonForDataAnalysis)).toBeVisible();
 
     // 2. Replace the query with uppercase text.
     await catalog.searchFor('PYTHON');
 
     await expect(catalog.courseCount).toHaveText('1 courses');
-    await expect(catalog.courseCard('Python for Data Analysis')).toBeVisible();
+    await expect(catalog.courseCard(courseTitles.pythonForDataAnalysis)).toBeVisible();
 
     // 3. Clear the query and recover the full catalog.
     await catalog.clearSearch();

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
+import { assistantPrompts, courseTitles } from './data/learnspace-test-data';
 
 test.describe('Reject unrelated natural-language prompts rather than returning false matches', () => {
   test('[P2] Reject unrelated natural-language prompts rather than returning false matches', async ({ page }) => {
@@ -14,8 +15,8 @@ test.describe('Reject unrelated natural-language prompts rather than returning f
     await expect(assistant.noMatchMessage).toBeVisible();
 
     // 2. Submit an unambiguous supported goal.
-    await assistant.submitWithEnter('Python');
+    await assistant.submitWithEnter(assistantPrompts.python);
 
-    await expect(assistant.recommendedCourse('Python for Data Analysis')).toBeVisible();
+    await expect(assistant.recommendedCourse(courseTitles.pythonForDataAnalysis)).toBeVisible();
   });
 });

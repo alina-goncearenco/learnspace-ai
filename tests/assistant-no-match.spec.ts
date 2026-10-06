@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
+import { courseTitles } from './data/learnspace-test-data';
 
 test.describe('Handle an assistant prompt with no matching catalog terms', () => {
   test('[P1] Handle an assistant prompt with no matching catalog terms', async ({ page }) => {
@@ -16,6 +17,6 @@ test.describe('Handle an assistant prompt with no matching catalog terms', () =>
     // 2. Submit a supported goal after the fallback.
     await assistant.submitWithEnter('SQL');
 
-    await expect(assistant.recommendedCourse('SQL Fundamentals')).toBeVisible();
+    await expect(assistant.recommendedCourse(courseTitles.sqlFundamentals)).toBeVisible();
   });
 });
