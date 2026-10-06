@@ -18,7 +18,7 @@ const courses: Course[] = [
     category: "Programming",
     level: "Beginner",
     description: "Learn types, interfaces, functions and practical TypeScript.",
-    keywords: ["typescript", "programming", "code", "javascript"],
+    keywords: ["typescript", "programming", "code", "javascript", "automation"],
   },
   {
     id: 2,
@@ -79,9 +79,27 @@ const courses: Course[] = [
 ];
 
 const categories = ["All", ...new Set(courses.map((c) => c.category))];
+const assistantStopWords = new Set([
+  "i",
+  "want",
+  "to",
+  "learn",
+  "the",
+  "a",
+  "an",
+  "about",
+  "course",
+  "courses",
+  "for",
+  "how",
+  "me",
+  "please",
+]);
 
 function recommend(question: string): Course[] {
-  const words = question.toLowerCase().match(/[a-z]+/g) ?? [];
+  const words = (question.toLowerCase().match(/[a-z]+/g) ?? []).filter(
+    (word) => word.length > 2 && !assistantStopWords.has(word),
+  );
 
   return courses
     .map((course) => {
@@ -93,7 +111,7 @@ function recommend(question: string): Course[] {
 
       const score = words.reduce(
         (total, word) =>
-          total + (word.length > 2 && text.includes(word) ? 1 : 0),
+          total + (text.includes(word) ? 1 : 0),
         0
       );
 
