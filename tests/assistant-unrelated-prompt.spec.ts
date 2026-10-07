@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
 import { assistantPrompts, courseTitles } from './data/learnspace-test-data';
 
-test.describe('Reject unrelated natural-language prompts rather than returning false matches', () => {
+test.describe('Reject unrelated natural-language prompts rather than returning false matches', { tag: '@ui' }, () => {
   test('[P2] Reject unrelated natural-language prompts rather than returning false matches', async ({ page }) => {
     const assistant = new LearningAssistantPage(page);
 

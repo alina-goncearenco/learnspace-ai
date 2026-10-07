@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
 import { courseTitles } from './data/learnspace-test-data';
 
-test.describe('Handle an assistant prompt with no matching catalog terms', () => {
+test.describe('Handle an assistant prompt with no matching catalog terms', { tag: '@ui' }, () => {
   test('[P1] Handle an assistant prompt with no matching catalog terms', async ({ page }) => {
     const assistant = new LearningAssistantPage(page);
 

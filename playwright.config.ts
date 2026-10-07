@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const apiBaseURL = (
+  process.env.API_BASE_URL ?? 'http://localhost:3001'
+).replace(/\/+$/, '');
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -37,16 +41,27 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: '**/api/**',
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      testIgnore: '**/api/**',
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      testIgnore: '**/api/**',
+    },
+
+    {
+      name: 'api',
+      testMatch: '**/api/**/*.spec.ts',
+      use: {
+        baseURL: apiBaseURL,
+      },
     },
 
     /* Test against mobile viewports. */
@@ -70,9 +85,16 @@ export default defineConfig({
     // },
   ],
 
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'npm run api',
+      url: `${apiBaseURL}/api/health`,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });

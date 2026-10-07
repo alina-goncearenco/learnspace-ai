@@ -1,75 +1,81 @@
-# React + TypeScript + Vite
+# LearnSpace — AI Learning Assistant QA Lab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LearnSpace is a small learning-platform demo built to demonstrate modern
+QA/SDET practices across UI, API, and AI-oriented testing.
 
-Currently, two official plugins are available:
+## Project overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The application includes a course catalog with category filtering and search, a
+Learning Assistant recommendation feature, and a lightweight API layer. The
+assistant currently uses deterministic keyword matching; it is not connected to
+a live LLM.
 
-## React Compiler
+## QA and testing architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+LearnSpace
+├── UI
+│   └── Playwright E2E tests
+├── API
+│   └── Playwright API tests
+└── AI
+    └── AI evaluation prototype / planned evaluation layer
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+UI tests exercise the application through the browser. API tests use Playwright
+`APIRequestContext` through reusable API clients. The planned AI evaluation
+layer is intended to assess AI/LLM-style behavior separately from UI and API
+functional testing; the current assistant is deterministic keyword matching,
+not an LLM.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Test code is organized by responsibility:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Path | Purpose |
+| --- | --- |
+| `tests/pages/` | UI Page Objects |
+| `tests/clients/` | Reusable API clients |
+| `tests/api/` | API tests |
+| `tests/data/` | Shared test data |
+| `tests/types/` | Shared API test types |
+| `specs/` | API contracts and test plans |
 
+## Test coverage
+
+The current suite covers:
+
+- UI catalog, search, and category-filter behavior
+- Learning Assistant recommendations, no-match behavior, and regression coverage for unrelated-topic recommendations
+- API catalog contract, recommendation behavior, and negative/validation cases
+- Consistency between recommendation results and the current catalog
+- UI execution in Chromium, Firefox, and WebKit
+- Dedicated API execution without launching a browser
+
+## Running tests
+
+```sh
+# Full suite
+npm test
+
+# UI only
+npm run test:ui
+
+# API only
+npm run test:api
 ```
+
+The `@ui` and `@api` tags allow selective local execution. API tests run in the
+dedicated Playwright API project and do not launch a browser. Playwright manages
+the API server lifecycle, so there is no need to run `npm run api` manually.
+The normal full-suite command runs both UI and API tests.
+
+## CI
+
+GitHub Actions builds the application before testing and runs the complete
+Playwright suite. CI intentionally does not use the UI/API subset commands.
+
+## Project status / next step
+
+The next planned testing layer is AI evaluation: assessing relevance,
+grounding, abstention, ranking, and robustness for AI-style responses. This
+will evaluate the deterministic assistant honestly and will not treat it as a
+live LLM.

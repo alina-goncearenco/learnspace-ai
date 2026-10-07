@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { CourseCatalogPage } from './pages/course-catalog-page';
 import { courseTitles } from './data/learnspace-test-data';
 
-test.describe('Search for a course and recover to the full catalog', () => {
+test.describe('Search for a course and recover to the full catalog', { tag: '@ui' }, () => {
   test('[P0] Search for a course and recover to the full catalog', async ({ page }) => {
     const catalog = new CourseCatalogPage(page);
 

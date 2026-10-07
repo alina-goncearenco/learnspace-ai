@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
 import { browserAutomationRecommendationTitles } from './data/learnspace-test-data';
 
-test.describe('Get recommendations for a supported learning goal', () => {
+test.describe('Get recommendations for a supported learning goal', { tag: '@ui' }, () => {
   test('[P0] Get recommendations for a supported learning goal', async ({ page }) => {
     const assistant = new LearningAssistantPage(page);
 

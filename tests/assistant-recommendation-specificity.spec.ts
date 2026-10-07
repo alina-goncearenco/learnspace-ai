@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { LearningAssistantPage } from './pages/learning-assistant-page';
 import { courseTitles } from './data/learnspace-test-data';
 
-test.describe('Learning Assistant recommendation specificity', () => {
+test.describe('Learning Assistant recommendation specificity', { tag: '@ui' }, () => {
   test('[P1] Return only the appropriate course for a supported SQL goal', async ({ page }) => {
     const assistant = new LearningAssistantPage(page);
 
