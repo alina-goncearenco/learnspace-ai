@@ -41,19 +41,19 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testIgnore: '**/api/**',
+      testIgnore: ['**/api/**', '**/ai/**'],
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
-      testIgnore: '**/api/**',
+      testIgnore: ['**/api/**', '**/ai/**'],
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-      testIgnore: '**/api/**',
+      testIgnore: ['**/api/**', '**/ai/**'],
     },
 
     {
@@ -62,6 +62,11 @@ export default defineConfig({
       use: {
         baseURL: apiBaseURL,
       },
+    },
+
+    {
+      name: 'ai-eval',
+      testMatch: '**/ai/**/*.spec.ts',
     },
 
     /* Test against mobile viewports. */

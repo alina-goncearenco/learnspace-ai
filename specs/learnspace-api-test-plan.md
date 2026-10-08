@@ -22,7 +22,7 @@ Plan for lightweight contract-based API tests of GET /api/courses and POST /api/
     - expect: Verify that courses is an array and contains the expected canonical course titles. Do not assert an exact catalog size, because the catalog may legitimately grow.
     - expect: Each course has id (number), title (string), category (string), level (string), description (string), and keywords (array of strings).
     - expect: Course IDs are unique within the returned catalog.
-    - expect: The catalog includes the documented example record: id 1, TypeScript Fundamentals, with the documented fields and keyword values.
+    - expect: The catalog includes the documented TypeScript Fundamentals example record with the expected field structure and values, without requiring a fixed course ID.
     - expect: The endpoint returns the complete catalog; no request parameters or request body are sent.
 
 ### 2. Recommendations API
@@ -37,7 +37,7 @@ Plan for lightweight contract-based API tests of GET /api/courses and POST /api/
   1. Use the RecommendationsApi client, backed by Playwright APIRequestContext, to POST the data-driven prompt { "prompt": "I want to learn Python" } to /api/recommendations with JSON content type.
     - expect: The response status is 200 OK.
     - expect: The JSON response has a recommendations array.
-    - expect: The array includes the documented Python for Data Analysis course with id 2.
+    - expect: The array includes the documented Python for Data Analysis course.
     - expect: Each recommendation has the documented course fields and types: numeric id, string title/category/level/description, and string-array keywords.
     - expect: Each returned recommendation corresponds to a course in the catalog returned by GET /api/courses.
 
